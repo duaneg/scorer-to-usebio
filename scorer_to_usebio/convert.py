@@ -1,4 +1,5 @@
 import decimal
+import logging
 
 using_lxml = False
 try:
@@ -43,6 +44,11 @@ EVENT_TYPES = [
 TYPE_MAPPINGS = {
     'MP': 'MP_PAIRS',
 }
+
+# XPath query that gets all handicapped sections
+XPATH_HANDICAP_SECTIONS = "./sections/section[@handicap='true']"
+
+DECIMAL_001 = decimal.Decimal('0.01')
 
 def convert(file, include_dtd = False):
     if include_dtd and not using_lxml:
@@ -105,8 +111,14 @@ def get_participants(root, boards_played):
     yield from get_pairs(root, boards_played)
 
 def get_pairs(root, boards_played):
-    for in_pair in sorted(root.findall("./scores/scsection/pair"), key=get_pair_key):
-        yield convert_pair(in_pair, boards_played)
+    handicapped_sections = get_handicapped_sections(root)
+    for section in root.findall("./scores/scsection"):
+        handicapped = section.get('id') in handicapped_sections
+        for in_pair in sorted(section.findall("pair"), key=get_pair_key):
+            yield convert_pair(in_pair, boards_played, handicapped)
+
+def get_handicapped_sections(root):
+    return set([section.get('sectid') for section in root.findall(XPATH_HANDICAP_SECTIONS)])
 
 def get_pair_key(pair):
     dir = get_pair_direction(pair.get('dir'))
@@ -116,7 +128,7 @@ def get_pair_key(pair):
         dir = 1
     return (dir, int(pair.get('no')))
 
-def convert_pair(in_pair, boards_played):
+def convert_pair(in_pair, boards_played, handicapped):
     dir = get_pair_direction(in_pair.get('dir'))
     number = "{} {}".format(in_pair.get('no'), dir)
 
@@ -130,6 +142,10 @@ def convert_pair(in_pair, boards_played):
 
     final = decimal.Decimal(in_pair.get('res'))
     raw = decimal.Decimal(in_pair.get('raw_score'))
+    raw_handicap = in_pair.get('handicap')
+    handicap = decimal.Decimal(raw_handicap)
+    if handicapped == (raw_handicap == '0'):
+        logging.warning("section/pair handicap mismatch: %s/%s", handicapped, raw_handicap)
 
     element(out_pair, 'PLACE', in_pair.get('place'))
     element(out_pair, 'TOTAL_SCORE', str(final))
@@ -137,13 +153,23 @@ def convert_pair(in_pair, boards_played):
 
     add_master_points(in_pair, out_pair)
 
-    # TODO: Untested
-    # TODO: Presumably won't work with handicaps
-    if final != raw:
+    # TODO: Adjusted scores are untested!
+    #
+    # I really need to get hold of some adjusted results.
+    #
+    # The raw, final, and handicap values are all reported to two decimal
+    # places, but the final value we compute does not always match that
+    # provided (when we know there was no adjustment). Presumbably this is
+    # caused by rounding issues.
+    #
+    # Since it seems we must manually derive an adjustment value we just treat
+    # 0.01 differences as unadjusted and greater differences as being adjusted.
+    expected_final = (raw + handicap / 2).quantize(DECIMAL_001)
+    if (final - expected_final).copy_abs() > DECIMAL_001:
         element(out_pair, 'ADJUSTMENT', str(final - raw))
 
-    # TODO: Untested
-    non_zero_element(out_pair, 'HANDICAP', in_pair.get('handicap'))
+    if handicapped:
+        element(out_pair, 'HANDICAP', raw_handicap)
 
     return out_pair
 
