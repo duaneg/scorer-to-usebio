@@ -62,6 +62,17 @@ class TestPair(unittest.TestCase):
         self.assertIsNone(Pair.get_pair_direction('H'))
         self.assertRaises(InvalidDirection, Pair.get_pair_direction, 'x')
 
+class TestTraveller(unittest.TestCase):
+    def test_get_trick_count(self):
+        self.assertIsNone(Traveller.get_trick_count("", ""))
+        self.assertIsNone(Traveller.get_trick_count("PASS", ""))
+        self.assertEqual(Traveller.get_trick_count("1 NT", "="), 7)
+        self.assertEqual(Traveller.get_trick_count("1 NT", "-7"), 0)
+        self.assertEqual(Traveller.get_trick_count("1 NT", "+6"), 13)
+        self.assertEqual(Traveller.get_trick_count("7 S", "-1"), 12)
+        self.assertEqual(Traveller.get_trick_count("1 S", "+1"), 8)
+        self.assertEqual(Traveller.get_trick_count("1 S", "+6"), 13)
+
 class TestSection(unittest.TestCase):
     def test_get_set_pair_id(self):
         section = Section('A', False)

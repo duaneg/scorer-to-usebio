@@ -209,7 +209,7 @@ class Traveller(object):
         self.contract = contract or None
         self.declarer = declarer or None
         self.lead = lead or None
-        self.tricks = tricks or None
+        self.tricks = tricks
         self.score = score or None
         self.ns_mps = int(ns_mps)
         self.ew_mps = int(ew_mps)
@@ -217,14 +217,36 @@ class Traveller(object):
     @staticmethod
     def fromxml(result, section):
         (ns, ew) = [section.get_pair_id(dir, result.get(dir)) for dir in DIRECTIONS]
+
+        # Annoying: need to convert from contract/result to count of tricks won
+        contract = result.get('cont')
+
         return Traveller(ns, ew,
-                         result.get('cont'),
+                         contract,
                          result.get('dec'),
                          result.get('lead'),
-                         result.get('res'),
+                         Traveller.get_trick_count(contract, result.get('res')),
                          result.get('score'),
                          result.get('mp_ns'),
                          result.get('mp_ew'))
+
+    @staticmethod
+    def get_trick_count(contract, result):
+        parts = contract.split()
+
+        # Check for passed hands/adjusted/phantom(?)
+        if len(parts) != 2:
+            return None
+
+        # Otherwise the first part is the level of the contract
+        # Add six to get the target number of tricks
+        tricks = int(parts[0]) + 6
+
+        # Check for bid & made
+        if result == '=':
+            return tricks
+        else:
+            return tricks + int(result)
 
     def get_usebio_xml(self):
         xml = ET.Element('TRAVELLER_LINE')
