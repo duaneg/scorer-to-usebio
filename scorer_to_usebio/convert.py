@@ -242,7 +242,7 @@ class Traveller(object):
 
         # Check for passed hands/adjusted/phantom(?)
         if len(parts) != 2:
-            return None
+            return 0
 
         # Otherwise the first part is the level of the contract
         # Add six to get the target number of tricks
@@ -261,7 +261,7 @@ class Traveller(object):
         non_empty_element(xml, 'CONTRACT', self.contract)
         non_empty_element(xml, 'PLAYED_BY', self.declarer)
         non_empty_element(xml, 'LEAD', self.lead)
-        non_empty_element(xml, 'TRICKS', self.tricks)
+        element(xml, 'TRICKS', self.tricks)
         non_empty_element(xml, 'SCORE', self.score)
         element(xml, 'NS_MATCH_POINTS', self.ns_mps)
         element(xml, 'EW_MATCH_POINTS', self.ew_mps)
