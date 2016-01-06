@@ -28,4 +28,5 @@ class IntegrationTest(unittest.TestCase):
             expected = ET.parse(os.path.join(CONVERTED_DIR, os.path.basename(path)))
             converted_text = ET.tostring(converted.getroot())
             expected_text = ET.tostring(expected.getroot())
-            self.assertEqual(converted_text, expected_text)
+            fail_msg = "conversion mismatch for example file {}".format(os.path.normpath(path))
+            self.assertEqual(converted_text, expected_text, msg=fail_msg)

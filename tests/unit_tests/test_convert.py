@@ -8,104 +8,114 @@ except ImportError:
 
 import unittest
 
+from decimal import Decimal
 from scorer_to_usebio.convert import *
 
-class TestConvert(unittest.TestCase):
-    def test_get_boards_played(self):
-        xml = ET.XML("""
-            <session>
-              <board_results>
-                <brsection>
-                    <result bd="1" ns="1" ew="1"/>
-                    <result bd="2" ns="1" ew="2"/>
-                </brsection>
-              </board_results>
-            </session>""")
+class TestScore(unittest.TestCase):
+    def test_fromxml_spurious_handicap(self):
+        xml = ET.XML('<result res="0" raw_score="0" handicap="1"/>')
+        self.assertRaises(HandicapMismatch, Score.fromxml, xml, False)
 
-        played = get_boards_played(xml)
-        self.assertEqual(dict(played), {
-            '1 NS': 2,
-            '1 EW': 1,
-            '2 EW': 1,
-        })
+    def test_fromxml_missing_handicap(self):
+        xml = ET.XML('<result res="0" raw_score="0" handicap="0"/>')
+        self.assertRaises(HandicapMismatch, Score.fromxml, xml, True)
 
-    def test_get_ids(self):
-        res = ET.XML('<result ns="1" ew="2"/>')
-        self.assertEqual(get_ns_id(res), '1 NS')
-        self.assertEqual(get_ew_id(res), '2 EW')
+    def test_fromxml_no_adjustment_round_down(self):
+        xml = ET.XML('<result place="1" res="50.00" raw_score="49.99" handicap="0"/>')
+        score = Score.fromxml(xml, False)
+        self.assertIsNone(score.adjustment)
 
-    def test_get_pair_key(self):
-        n1 = ET.XML('<pair dir="N" no="1"/>')
-        e2 = ET.XML('<pair dir="E" no="2"/>')
-        foo3 = ET.XML('<pair dir="foo" no="3"/>')
-        none4 = ET.XML('<pair no="4"/>')
-        self.assertEqual(get_pair_key(n1), (0, 1))
-        self.assertEqual(get_pair_key(e2), (1, 2))
-        self.assertEqual(get_pair_key(foo3), ('foo', 3))
-        self.assertEqual(get_pair_key(none4), (None, 4))
+    def test_fromxml_no_adjustment_round_up(self):
+        xml = ET.XML('<result place="1" res="50.00" raw_score="50.01" handicap="0"/>')
+        score = Score.fromxml(xml, False)
+        self.assertIsNone(score.adjustment)
+
+    def test_fromxml_adjustment(self):
+        xml = ET.XML('<result place="1" res="50.02" raw_score="50.00" handicap="0"/>')
+        score = Score.fromxml(xml, False)
+        self.assertEqual(score.adjustment, Decimal("0.02"))
+
+    def test_get_master_points(self):
+        xml = ET.XML('<result apoints="1" cpoints="3"/>')
+        mps = Score.get_master_points(xml)
+        self.assertEqual(mps, [
+            MasterPoints('a', 1),
+            MasterPoints('c', 3),
+        ])
+
+class TestPair(unittest.TestCase):
+    def test_plays(self):
+        p1 = Pair(0, 'ns', [], None)
+        p2 = Pair(0, 'ew', [], None)
+        p3 = Pair(0, None, [], None)
+        self.assertTrue(p1.plays('ns'))
+        self.assertFalse(p1.plays('ew'))
+        self.assertFalse(p2.plays('ns'))
+        self.assertTrue(p2.plays('ew'))
+        self.assertTrue(p3.plays('ns'))
+        self.assertTrue(p3.plays('ew'))
 
     def test_get_pair_direction(self):
-        self.assertEqual(get_pair_direction('N'), 'NS')
-        self.assertEqual(get_pair_direction('E'), 'EW')
-        self.assertEqual(get_pair_direction('foo'), 'foo')
+        self.assertEqual(Pair.get_pair_direction('N'), 'ns')
+        self.assertEqual(Pair.get_pair_direction('E'), 'ew')
+        self.assertIsNone(Pair.get_pair_direction(''))
+        self.assertIsNone(Pair.get_pair_direction('H'))
+        self.assertRaises(InvalidDirection, Pair.get_pair_direction, 'x')
 
-    def test_convert_player(self):
-        pair = ET.XML('<pair player_name_1="p1" player_name_2="p2" nzb_no_1="1" nzb_no_2=""/>')
-        p1 = convert_player(pair, 1)
-        p2 = convert_player(pair, 2)
-        self.assertEqual(len(p1), 2)
-        self.assertEqual(p1[0].text, 'p1')
-        self.assertEqual(p1[1].text, '1')
-        self.assertEqual(len(p2), 1)
-        self.assertEqual(p2[0].text, 'p2')
+class TestSection(unittest.TestCase):
+    def test_get_set_pair_id(self):
+        section = Section('A', False)
+        section.set_pair_id('ns', 1, 1)
+        section.set_pair_id('ew', 1, 2)
+        self.assertEqual(section.get_pair_id('ns', 1), 1)
+        self.assertEqual(section.get_pair_id('ew', 1), 2)
+        self.assertRaises(DuplicatePairMapping, section.set_pair_id, 'ns', 1, 1)
 
-    def test_add_master_points(self):
-        xml = ET.XML('<result apoints="1" cpoints="3"/>')
-        pair = ET.XML('<pair/>')
-        add_master_points(xml, pair)
-        self.assertEqual(len(pair), 2)
-        self.assertEqual(pair[0][0].text, '1')
-        self.assertEqual(pair[0][1].text, 'a')
-        self.assertEqual(pair[1][0].text, '3')
-        self.assertEqual(pair[1][1].text, 'c')
+def player(count):
+    return Player(str(count), count)
 
-    def test_convert_result_given_3nt(self):
-        res = ET.XML("""<result ns="1"
-                                ew="2"
-                                cont="3 NT"
-                                dec="N"
-                                lead="SA"
-                                res="="
-                                score="400"
-                                mp_ns="240"
-                                mp_ew="50"/>""")
+def pair(id=None, number=0, dir=None, players=(player(1), player(2))):
+    return Pair(number, dir, players, None, id=id)
 
-        traveller = convert_result(res)
-        self.assertEqual(len(traveller), 9)
-        self.assertEqual(traveller[0].text, '1 NS')
-        self.assertEqual(traveller[1].text, '2 EW')
-        self.assertEqual(traveller[2].text, '3 NT')
-        self.assertEqual(traveller[3].text, 'N')
-        self.assertEqual(traveller[4].text, 'SA')
-        self.assertEqual(traveller[5].text, '=')
-        self.assertEqual(traveller[6].text, '400')
-        self.assertEqual(traveller[7].text, '240')
-        self.assertEqual(traveller[8].text, '50')
+class TestSession(unittest.TestCase):
+    def test_check_for_duplicates_given_dup_players(self):
+        pairs = [pair(id='1'), pair(id='2')]
+        self.assertRaises(DuplicatePair, Session.check_for_duplicates, pairs)
 
-    def test_convert_result_given_passed(self):
-        res = ET.XML("""<result ns="1"
-                                ew="2"
-                                cont="pass"
-                                dec=""
-                                lead=""
-                                res=""
-                                score=""
-                                mp_ns="240"
-                                mp_ew="50"/>""")
+    def test_check_for_duplicates_given_dup_ids(self):
+        p1 = (player(1), player(2))
+        p2 = (player(3), player(4))
+        pairs = [pair(id='1', players=p1), pair(id='1', players=p2)]
+        self.assertRaises(DuplicatePair, Session.check_for_duplicates, pairs)
 
-        traveller = convert_result(res)
-        self.assertEqual(len(traveller), 5)
+    def test_assign_ids_multi_section(self):
+        session = Session()
+        session.sections['A'] = Section('A', False)
+        session.sections['B'] = Section('B', False)
+        p1 = [pair(number='1'), pair(number='2')]
+        p2 = [pair(dir='ns'), pair(dir='ew')]
+        session.assign_ids(session.sections['A'], p1)
+        session.assign_ids(session.sections['B'], p2)
+        self.assertEqual(p1[0].id, '(A) 1')
+        self.assertEqual(p1[1].id, '(A) 2')
+        self.assertEqual(p2[0].id, '(B) 0 NS')
+        self.assertEqual(p2[1].id, '(B) 0 EW')
 
+class TestEvent(unittest.TestCase):
+    def test_invalid_scoring_type(self):
+        xml = ET.XML('<session type="foo"/>')
+        self.assertRaises(InvalidEventType, Event, "", 1, "foo", None, "", "", None)
+
+    def test_unknown_scoring_type(self):
+        xml = ET.XML('<session type="foo"/>')
+        self.assertRaises(InvalidEventType, Event.fromxml, xml)
+
+    def test_get_pair_key(self):
+        self.assertEqual(Event.get_pair_key(pair(number='1', dir='ns'), False), (None, 1))
+        self.assertEqual(Event.get_pair_key(pair(number='1', dir='ns'), True), (False, 1))
+        self.assertEqual(Event.get_pair_key(pair(number='1', dir='ew'), True), (True, 1))
+
+class TestFunctions(unittest.TestCase):
     def test_element(self):
         xml = ET.XML("<parent/>")
         self.assertEqual(element(xml, 'a').text, None)
@@ -147,5 +157,5 @@ class TestConvert(unittest.TestCase):
         self.assertEqual(tree.docinfo.public_id, None)
         self.assertEqual(tree.docinfo.system_url, None)
         add_dtd(tree)
-        self.assertEqual(tree.docinfo.public_id, '-//EBU//DTD USEBIO 1.1//EN')
-        self.assertEqual(tree.docinfo.system_url, 'http://www.usebio.org/files/usebio_v1_1.dtd')
+        self.assertEqual(tree.docinfo.public_id, '-//EBU//DTD USEBIO 1.2//EN')
+        self.assertEqual(tree.docinfo.system_url, 'http://www.usebio.org/files/usebio_v1_2.dtd')
