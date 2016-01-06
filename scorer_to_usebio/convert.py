@@ -218,6 +218,13 @@ class Traveller(object):
     def fromxml(result, section):
         (ns, ew) = [section.get_pair_id(dir, result.get(dir)) for dir in DIRECTIONS]
 
+        # Scorer records what looks like floor(MPs * 10).
+        #
+        # Nothing we can do about the floor bit, but divide by 10 to get close
+        # to proper MP values.
+        mp_ns = float(result.get('mp_ns')) / 10
+        mp_ew = float(result.get('mp_ew')) / 10
+
         # Annoying: need to convert from contract/result to count of tricks won
         contract = result.get('cont')
 
@@ -227,8 +234,7 @@ class Traveller(object):
                          result.get('lead'),
                          Traveller.get_trick_count(contract, result.get('res')),
                          result.get('score'),
-                         result.get('mp_ns'),
-                         result.get('mp_ew'))
+                         mp_ns, mp_ew)
 
     @staticmethod
     def get_trick_count(contract, result):
