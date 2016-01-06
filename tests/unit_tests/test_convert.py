@@ -112,6 +112,14 @@ class TestSession(unittest.TestCase):
         self.assertEqual(p2[0].id, '(B) 0 NS')
         self.assertEqual(p2[1].id, '(B) 0 EW')
 
+    def test_fixup_scores(self):
+        traveller = Traveller('1', '2', '1 NT', 'N', '', 7, 'Adj', 14.4, 9.6)
+        session = Session()
+        session.sections['A'] = Section('A', False)
+        session.sections['A'].boards[1].append(traveller)
+        session.fixup_scores()
+        self.assertEqual(session.sections['A'].boards[1][0].score, 'A5050')
+
 class TestEvent(unittest.TestCase):
     def test_invalid_scoring_type(self):
         xml = ET.XML('<session type="foo"/>')

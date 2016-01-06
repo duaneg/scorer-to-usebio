@@ -302,6 +302,7 @@ class Session(object):
         session.read_sections(root)
         session.read_pairs(root)
         session.read_boards(root)
+        session.fixup_scores()
         return session
 
     def read_sections(self, root):
@@ -379,6 +380,16 @@ class Session(object):
     def get_pair(self, sec_id, dir, dir_id):
         pair_id = self.sections[sec_id].get_pair_id(dir, dir_id)
         return self.pairs[pair_id]
+
+    def fixup_scores(self):
+        for section in self.sections.values():
+            for boards in section.boards.values():
+                for traveller in boards:
+                    if traveller.score == 'Adj':
+
+                        # TODO: Need to figure this out from the MPs awarded
+                        #       This is somewhat involved, so for now:
+                        traveller.score = 'A5050'
 
 class Event(object):
     def __init__(self,
