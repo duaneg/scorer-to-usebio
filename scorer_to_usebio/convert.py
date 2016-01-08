@@ -75,6 +75,16 @@ class HandicapMismatch(Exception):
             msg = "handicap value {} given for non-handicapped event".format(handicap_value)
         super(HandicapMismatch, self).__init__(msg)
 
+class InvalidMatchPoints(Exception):
+    def __init__(self, mps):
+        msg = "invalid match point value: {}".format(mps)
+        super(InvalidMatchPoints, self).__init__(msg)
+
+class InconsistentMatchPoints(Exception):
+    def __init__(self, mp1, mp2):
+        msg = "inconsistent match point totals: {} / {}".format(mp1, mp2)
+        super(InconsistentMatchPoints, self).__init__(msg)
+
 MasterPoints = namedtuple('MasterPoints', ['type', 'points'])
 
 class Score(object):
@@ -154,13 +164,19 @@ class Player(object):
         return player
 
 class Pair(object):
-    def __init__(self, number, dir, players, score, id=None):
+    def __init__(self, number, dir, players, score, mps, id=None):
         self.id = id
         self.number = number
         self.dir = dir
         self.boards_played = 0
         self.players = players
         self.score = score
+        try:
+            self.matchpoints = [int(x) for x in mps.split('/')]
+        except ValueError:
+            raise InvalidMatchPoints(mps)
+        if len(self.matchpoints) != 2:
+            raise InvalidMatchPoints(mps)
 
     def plays(self, dir):
         assert dir in DIRECTIONS
@@ -172,7 +188,8 @@ class Pair(object):
         dir = Pair.get_pair_direction(pair.get('dir'))
         players = (Player.fromxml(pair, 1), Player.fromxml(pair, 2))
         score = Score.fromxml(pair, handicapped)
-        return Pair(no, dir, players, score)
+        mps = pair.get('match_points')
+        return Pair(no, dir, players, score, mps)
 
     @staticmethod
     def get_pair_direction(dir):
@@ -393,6 +410,36 @@ class Session(object):
                         #       This is somewhat involved, so for now:
                         traveller.score = 'A5050'
 
+    def fixup_places(self, winners):
+        ranks = [[]]
+        if winners == 2:
+            ranks.append([])
+
+        expected = None
+        for pair in self.pairs.values():
+            if winners == 2 and pair.dir == 'ew':
+                rank = ranks[1]
+            else:
+                rank = ranks[0]
+
+            if expected is None:
+                expected = pair.matchpoints[1]
+
+            if expected != pair.matchpoints[1]:
+                raise InconsistentMatchPoints(expected, pair.matchpoints[1])
+
+            rank.append((pair.matchpoints[0], pair))
+
+        for rank in ranks:
+            place = None
+            prev_score = None
+            rank.sort(key=lambda x: (x[0], x[1].id), reverse=True)
+            for (ii, (mps, pair)) in enumerate(rank):
+                if mps != prev_score:
+                    place = ii + 1
+                pair.score.place = place
+                prev_score = mps
+
 class Event(object):
     def __init__(self,
                  club_name,
@@ -419,6 +466,11 @@ class Event(object):
             self.winners = 2
         else:
             self.winners = 1
+
+        # Calculate places. We can't rely on scorer as it reports winners for
+        # each section and possibly direction (depending on movement), whereas
+        # we need to report them overall across sections.
+        self.session.fixup_places(self.winners)
 
     @staticmethod
     def fromxml(root):

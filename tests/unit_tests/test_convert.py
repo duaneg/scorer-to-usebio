@@ -43,11 +43,22 @@ class TestScore(unittest.TestCase):
             MasterPoints('c', 3),
         ])
 
+def player(count):
+    return Player(str(count), count)
+
+def pair(id=None, number=0, dir=None, players=(player(1), player(2)), mps="0/0"):
+    return Pair(number, dir, players, None, mps, id=id)
+
 class TestPair(unittest.TestCase):
+    def test_invalid_mps(self):
+        self.assertRaises(InvalidMatchPoints, pair, mps="")
+        self.assertRaises(InvalidMatchPoints, pair, mps="0")
+        self.assertRaises(InvalidMatchPoints, pair, mps="x/y")
+
     def test_plays(self):
-        p1 = Pair(0, 'ns', [], None)
-        p2 = Pair(0, 'ew', [], None)
-        p3 = Pair(0, None, [], None)
+        p1 = pair(dir='ns')
+        p2 = pair(dir='ew')
+        p3 = pair()
         self.assertTrue(p1.plays('ns'))
         self.assertFalse(p1.plays('ew'))
         self.assertFalse(p2.plays('ns'))
@@ -82,12 +93,6 @@ class TestSection(unittest.TestCase):
         self.assertEqual(section.get_pair_id('ew', 1), 2)
         self.assertRaises(DuplicatePairMapping, section.set_pair_id, 'ns', 1, 1)
 
-def player(count):
-    return Player(str(count), count)
-
-def pair(id=None, number=0, dir=None, players=(player(1), player(2))):
-    return Pair(number, dir, players, None, id=id)
-
 class TestSession(unittest.TestCase):
     def test_check_for_duplicates_given_dup_players(self):
         pairs = [pair(id='1'), pair(id='2')]
@@ -119,6 +124,42 @@ class TestSession(unittest.TestCase):
         session.sections['A'].boards[1].append(traveller)
         session.fixup_scores()
         self.assertEqual(session.sections['A'].boards[1][0].score, 'A5050')
+
+    def test_fixup_places_single_winner(self):
+        session = Session()
+        self.add_pairs(session, "0/3", "2/3", "1/3", "1/3")
+        session.fixup_places(1)
+        print(session.pairs)
+        self.assertEqual(session.pairs[0].score.place, 4)
+        self.assertEqual(session.pairs[1].score.place, 1)
+        self.assertEqual(session.pairs[2].score.place, 2)
+        self.assertEqual(session.pairs[3].score.place, 2)
+
+    def test_fixup_places_two_winners(self):
+        session = Session()
+        self.add_pairs(session, "3/3", "2/3", "1/3", "1/3", dir='ns')
+        self.add_pairs(session, "3/3", "1/3", "2/3", "0/3", dir='ew')
+        session.fixup_places(2)
+        self.assertEqual(session.pairs[0].score.place, 1)
+        self.assertEqual(session.pairs[1].score.place, 2)
+        self.assertEqual(session.pairs[2].score.place, 3)
+        self.assertEqual(session.pairs[3].score.place, 3)
+        self.assertEqual(session.pairs[4].score.place, 1)
+        self.assertEqual(session.pairs[5].score.place, 3)
+        self.assertEqual(session.pairs[6].score.place, 2)
+        self.assertEqual(session.pairs[7].score.place, 4)
+
+    def test_fixup_places_inconsistent(self):
+        session = Session()
+        self.add_pairs(session, "1/2", "1/3")
+        self.assertRaises(InconsistentMatchPoints, session.fixup_places, 1)
+        self.assertRaises(InconsistentMatchPoints, session.fixup_places, 2)
+
+    def add_pairs(self, session, *mps, dir=None):
+        for mp in mps:
+            pr = pair(mps=mp, dir=dir)
+            pr.score = Score(0, None, None, None, None)
+            session.pairs[len(session.pairs)] = pr
 
 class TestEvent(unittest.TestCase):
     def test_invalid_scoring_type(self):
