@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<session club="Palmerston North Bridge Club" club_no="330" field_scoring="false" scoring_type="MP" event_name="Monday Summer Bridge Dec 2015" event_date="28/12/2015" event_time="Afternoon">
+  <sections>
+    <section sectid="A" tables="6" room="A" colour="Pink" handicap="false"/>
+  </sections>
+  <board_results>
+    <brsection id="A">
+      <result tab="1" bd="1" rnd="1" ns="12" ew="1" dec="N" cont="4 S" lead="CT" res="+2" score="480" mp_ns="100" mp_ew="0"/>
+      <result tab="1" bd="2" rnd="1" ns="12" ew="1" dec="W" cont="3 NT" lead="" res="=" score="-400" mp_ns="60" mp_ew="40"/>
+      <result tab="1" bd="3" rnd="1" ns="12" ew="1" dec="S" cont="3 NT" lead="" res="-2" score="-100" mp_ns="10" mp_ew="90"/>
+      <result tab="2" bd="4" rnd="1" ns="11" ew="4" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="5" rnd="1" ns="11" ew="4" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="6" rnd="1" ns="11" ew="4" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="3" bd="7" rnd="1" ns="10" ew="8" dec="S" cont="4 H" lead="CK" res="-2" score="-200" mp_ns="26" mp_ew="74"/>
+      <result tab="3" bd="8" rnd="1" ns="10" ew="8" dec="W" cont="3 NT" lead="C8" res="=" score="-400" mp_ns="74" mp_ew="26"/>
+      <result tab="3" bd="9" rnd="1" ns="10" ew="8" dec="S" cont="3 S" lead="CA" res="-1" score="-50" mp_ns="74" mp_ew="26"/>
+      <result tab="4" bd="10" rnd="1" ns="2" ew="7" dec="E" cont="4 S x" lead="ST" res="-1" score="200" mp_ns="98" mp_ew="2"/>
+      <result tab="4" bd="11" rnd="1" ns="2" ew="7" dec="N" cont="3 D" lead="HQ" res="-3" score="-150" mp_ns="14" mp_ew="86"/>
+      <result tab="4" bd="12" rnd="1" ns="2" ew="7" dec="S" cont="3 S" lead="CA" res="-1" score="-100" mp_ns="50" mp_ew="50"/>
+      <result tab="5" bd="13" rnd="1" ns="9" ew="6" dec="N" cont="4 S" lead="H5" res="+2" score="680" mp_ns="38" mp_ew="62"/>
+      <result tab="5" bd="14" rnd="1" ns="9" ew="6" dec="E" cont="6 D" lead="CA" res="=" score="-920" mp_ns="2" mp_ew="98"/>
+      <result tab="5" bd="15" rnd="1" ns="9" ew="6" dec="N" cont="3 C x" lead="DA" res="-2" score="-500" mp_ns="2" mp_ew="98"/>
+      <result tab="6" bd="16" rnd="1" ns="5" ew="3" dec="E" cont="2 C" lead="D9" res="-1" score="100" mp_ns="38" mp_ew="62"/>
+      <result tab="6" bd="17" rnd="1" ns="5" ew="3" dec="E" cont="5 S" lead="HQ" res="+1" score="-480" mp_ns="2" mp_ew="98"/>
+      <result tab="6" bd="18" rnd="1" ns="5" ew="3" dec="E" cont="3 NT" lead="S3" res="+3" score="-490" mp_ns="2" mp_ew="98"/>
+      <result tab="1" bd="4" rnd="2" ns="12" ew="2" dec="W" cont="3 NT" lead="" res="-1" score="100" mp_ns="26" mp_ew="74"/>
+      <result tab="1" bd="5" rnd="2" ns="12" ew="2" dec="E" cont="3 S" lead="" res="=" score="-140" mp_ns="74" mp_ew="26"/>
+      <result tab="1" bd="6" rnd="2" ns="12" ew="2" dec="E" cont="4 H" lead="" res="+1" score="-650" mp_ns="14" mp_ew="86"/>
+      <result tab="2" bd="7" rnd="2" ns="11" ew="5" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="8" rnd="2" ns="11" ew="5" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="9" rnd="2" ns="11" ew="5" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="3" bd="10" rnd="2" ns="10" ew="9" dec="S" cont="3 D" lead="SK" res="-2" score="-200" mp_ns="2" mp_ew="98"/>
+      <result tab="3" bd="11" rnd="2" ns="10" ew="9" dec="N" cont="3 D" lead="HQ" res="-3" score="-150" mp_ns="14" mp_ew="86"/>
+      <result tab="3" bd="12" rnd="2" ns="10" ew="9" dec="S" cont="4 S" lead="D5" res="-1" score="-100" mp_ns="50" mp_ew="50"/>
+      <result tab="4" bd="13" rnd="2" ns="3" ew="8" dec="N" cont="4 S" lead="C7" res="+3" score="710" mp_ns="98" mp_ew="2"/>
+      <result tab="4" bd="14" rnd="2" ns="3" ew="8" dec="E" cont="5 D" lead="H4" res="+1" score="-420" mp_ns="50" mp_ew="50"/>
+      <result tab="4" bd="15" rnd="2" ns="3" ew="8" dec="W" cont="3 S" lead="HJ" res="-2" score="100" mp_ns="98" mp_ew="2"/>
+      <result tab="5" bd="16" rnd="2" ns="1" ew="7" dec="E" cont="3 C x" lead="D9" res="-1" score="200" mp_ns="98" mp_ew="2"/>
+      <result tab="5" bd="17" rnd="2" ns="1" ew="7" dec="E" cont="3 NT" lead="S2" res="+2" score="-460" mp_ns="26" mp_ew="74"/>
+      <result tab="5" bd="18" rnd="2" ns="1" ew="7" dec="E" cont="3 NT" lead="S3" res="+1" score="-430" mp_ns="74" mp_ew="26"/>
+      <result tab="6" bd="19" rnd="2" ns="6" ew="4" dec="N" cont="2 S" lead="H5" res="+3" score="200" mp_ns="62" mp_ew="38"/>
+      <result tab="6" bd="20" rnd="2" ns="6" ew="4" dec="N" cont="2 NT" lead="D5" res="+1" score="150" mp_ns="50" mp_ew="50"/>
+      <result tab="6" bd="21" rnd="2" ns="6" ew="4" dec="S" cont="4 H" lead="SK" res="=" score="620" mp_ns="26" mp_ew="74"/>
+      <result tab="1" bd="7" rnd="3" ns="12" ew="3" dec="N" cont="3 H" lead="" res="-1" score="-100" mp_ns="98" mp_ew="2"/>
+      <result tab="1" bd="8" rnd="3" ns="12" ew="3" dec="E" cont="3 NT" lead="" res="-1" score="50" mp_ns="98" mp_ew="2"/>
+      <result tab="1" bd="9" rnd="3" ns="12" ew="3" dec="S" cont="3 S" lead="" res="-2" score="-100" mp_ns="38" mp_ew="62"/>
+      <result tab="2" bd="10" rnd="3" ns="11" ew="6" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="11" rnd="3" ns="11" ew="6" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="12" rnd="3" ns="11" ew="6" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="3" bd="13" rnd="3" ns="10" ew="1" dec="N" cont="4 S" lead="H5" res="+2" score="680" mp_ns="38" mp_ew="62"/>
+      <result tab="3" bd="14" rnd="3" ns="10" ew="1" dec="E" cont="5 D" lead="S5" res="+1" score="-420" mp_ns="50" mp_ew="50"/>
+      <result tab="3" bd="15" rnd="3" ns="10" ew="1" dec="N" cont="3 C" lead="HA" res="-3" score="-300" mp_ns="26" mp_ew="74"/>
+      <result tab="4" bd="16" rnd="3" ns="4" ew="9" dec="N" cont="4 S" lead="CQ" res="-2" score="-100" mp_ns="2" mp_ew="98"/>
+      <result tab="4" bd="17" rnd="3" ns="4" ew="9" dec="W" cont="6 S" lead="S6" res="-2" score="100" mp_ns="98" mp_ew="2"/>
+      <result tab="4" bd="18" rnd="3" ns="4" ew="9" dec="E" cont="3 C" lead="H2" res="+1" score="-130" mp_ns="98" mp_ew="2"/>
+      <result tab="5" bd="19" rnd="3" ns="2" ew="8" dec="S" cont="4 H" lead="S7" res="+1" score="450" mp_ns="98" mp_ew="2"/>
+      <result tab="5" bd="20" rnd="3" ns="2" ew="8" dec="N" cont="1 NT" lead="S2" res="+3" score="180" mp_ns="74" mp_ew="26"/>
+      <result tab="5" bd="21" rnd="3" ns="2" ew="8" dec="S" cont="4 H" lead="S6" res="+1" score="650" mp_ns="86" mp_ew="14"/>
+      <result tab="6" bd="22" rnd="3" ns="7" ew="5" dec="W" cont="5 D" lead="CJ" res="=" score="-600" mp_ns="74" mp_ew="26"/>
+      <result tab="6" bd="23" rnd="3" ns="7" ew="5" dec="S" cont="2 C" lead="D3" res="+2" score="130" mp_ns="26" mp_ew="74"/>
+      <result tab="6" bd="24" rnd="3" ns="7" ew="5" dec="E" cont="3 D" lead="CA" res="-2" score="100" mp_ns="26" mp_ew="74"/>
+      <result tab="1" bd="10" rnd="4" ns="12" ew="4" dec="E" cont="2 S" lead="HQ" res="+2" score="-170" mp_ns="26" mp_ew="74"/>
+      <result tab="1" bd="11" rnd="4" ns="12" ew="4" dec="W" cont="3 NT" lead="" res="-3" score="150" mp_ns="98" mp_ew="2"/>
+      <result tab="1" bd="12" rnd="4" ns="12" ew="4" dec="S" cont="4 S" lead="" res="-1" score="-100" mp_ns="50" mp_ew="50"/>
+      <result tab="2" bd="13" rnd="4" ns="11" ew="7" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="14" rnd="4" ns="11" ew="7" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="15" rnd="4" ns="11" ew="7" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="3" bd="16" rnd="4" ns="10" ew="2" dec="S" cont="3 S" lead="D8" res="=" score="140" mp_ns="74" mp_ew="26"/>
+      <result tab="3" bd="17" rnd="4" ns="10" ew="2" dec="W" cont="6 S" lead="H9" res="-1" score="50" mp_ns="62" mp_ew="38"/>
+      <result tab="3" bd="18" rnd="4" ns="10" ew="2" dec="E" cont="3 NT" lead="S3" res="+2" score="-460" mp_ns="38" mp_ew="62"/>
+      <result tab="4" bd="19" rnd="4" ns="5" ew="1" dec="S" cont="3 H" lead="D2" res="+2" score="200" mp_ns="62" mp_ew="38"/>
+      <result tab="4" bd="20" rnd="4" ns="5" ew="1" dec="N" cont="2 C" lead="H4" res="=" score="90" mp_ns="14" mp_ew="86"/>
+      <result tab="4" bd="21" rnd="4" ns="5" ew="1" dec="S" cont="4 H" lead="DT" res="=" score="620" mp_ns="26" mp_ew="74"/>
+      <result tab="5" bd="22" rnd="4" ns="3" ew="9" dec="S" cont="6 S x" lead="HA" res="-7" score="-1700" mp_ns="2" mp_ew="98"/>
+      <result tab="5" bd="23" rnd="4" ns="3" ew="9" dec="E" cont="3 H" lead="D4" res="-2" score="200" mp_ns="62" mp_ew="38"/>
+      <result tab="5" bd="24" rnd="4" ns="3" ew="9" dec="E" cont="5 D x" lead="HT" res="-3" score="500" mp_ns="98" mp_ew="2"/>
+      <result tab="6" bd="25" rnd="4" ns="8" ew="6" dec="W" cont="4 S" lead="H7" res="=" score="-620" mp_ns="26" mp_ew="74"/>
+      <result tab="6" bd="26" rnd="4" ns="8" ew="6" dec="N" cont="3 H" lead="S7" res="+3" score="230" mp_ns="26" mp_ew="74"/>
+      <result tab="6" bd="27" rnd="4" ns="8" ew="6" dec="S" cont="3 NT" lead="S5" res="-3" score="-150" mp_ns="2" mp_ew="98"/>
+      <result tab="1" bd="13" rnd="5" ns="12" ew="5" dec="S" cont="4 S" lead="" res="+2" score="680" mp_ns="38" mp_ew="62"/>
+      <result tab="1" bd="14" rnd="5" ns="12" ew="5" dec="E" cont="5 D" lead="" res="+1" score="-420" mp_ns="50" mp_ew="50"/>
+      <result tab="1" bd="15" rnd="5" ns="12" ew="5" dec="E" cont="3 D" lead="" res="-1" score="50" mp_ns="74" mp_ew="26"/>
+      <result tab="2" bd="16" rnd="5" ns="11" ew="8" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="17" rnd="5" ns="11" ew="8" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="18" rnd="5" ns="11" ew="8" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="3" bd="19" rnd="5" ns="10" ew="3" dec="S" cont="6 H" lead="CQ" res="-1" score="-50" mp_ns="14" mp_ew="86"/>
+      <result tab="3" bd="20" rnd="5" ns="10" ew="3" dec="N" cont="2 C" lead="SK" res="=" score="90" mp_ns="14" mp_ew="86"/>
+      <result tab="3" bd="21" rnd="5" ns="10" ew="3" dec="S" cont="4 H" lead="SK" res="+1" score="650" mp_ns="86" mp_ew="14"/>
+      <result tab="4" bd="22" rnd="5" ns="6" ew="2" dec="E" cont="6 NT" lead="ST" res="=" score="-1440" mp_ns="38" mp_ew="62"/>
+      <result tab="4" bd="23" rnd="5" ns="6" ew="2" dec="E" cont="3 H x" lead="D4" res="-1" score="200" mp_ns="62" mp_ew="38"/>
+      <result tab="4" bd="24" rnd="5" ns="6" ew="2" dec="N" cont="4 S" lead="CK" res="=" score="420" mp_ns="62" mp_ew="38"/>
+      <result tab="5" bd="25" rnd="5" ns="4" ew="1" dec="W" cont="3 D" lead="C5" res="-1" score="100" mp_ns="86" mp_ew="14"/>
+      <result tab="5" bd="26" rnd="5" ns="4" ew="1" dec="N" cont="4 S" lead="DQ" res="=" score="620" mp_ns="74" mp_ew="26"/>
+      <result tab="5" bd="27" rnd="5" ns="4" ew="1" dec="S" cont="3 NT" lead="D5" res="+3" score="490" mp_ns="86" mp_ew="14"/>
+      <result tab="6" bd="1" rnd="5" ns="9" ew="7" dec="N" cont="4 S" lead="HA" res="+1" score="450" mp_ns="80" mp_ew="20"/>
+      <result tab="6" bd="2" rnd="5" ns="9" ew="7" dec="W" cont="1 H" lead="CT" res="-1" score="50" mp_ns="100" mp_ew="0"/>
+      <result tab="6" bd="3" rnd="5" ns="9" ew="7" dec="S" cont="4 H" lead="C9" res="-2" score="-100" mp_ns="10" mp_ew="90"/>
+      <result tab="1" bd="16" rnd="6" ns="12" ew="6" dec="E" cont="3 C" lead="" res="-1" score="100" mp_ns="38" mp_ew="62"/>
+      <result tab="1" bd="17" rnd="6" ns="12" ew="6" dec="W" cont="6 S" lead="" res="-1" score="50" mp_ns="62" mp_ew="38"/>
+      <result tab="1" bd="18" rnd="6" ns="12" ew="6" dec="E" cont="3 NT" lead="" res="+2" score="-460" mp_ns="38" mp_ew="62"/>
+      <result tab="2" bd="19" rnd="6" ns="11" ew="9" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="20" rnd="6" ns="11" ew="9" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="21" rnd="6" ns="11" ew="9" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="3" bd="22" rnd="6" ns="10" ew="4" dec="E" cont="6 NT" lead="S7" res="=" score="-1440" mp_ns="38" mp_ew="62"/>
+      <result tab="3" bd="23" rnd="6" ns="10" ew="4" dec="E" cont="5 H" lead="D8" res="-3" score="300" mp_ns="98" mp_ew="2"/>
+      <result tab="3" bd="24" rnd="6" ns="10" ew="4" dec="N" cont="5 S" lead="S3" res="-2" score="-100" mp_ns="2" mp_ew="98"/>
+      <result tab="4" bd="25" rnd="6" ns="7" ew="3" dec="W" cont="3 NT" lead="CJ" res="=" score="-600" mp_ns="50" mp_ew="50"/>
+      <result tab="4" bd="26" rnd="6" ns="7" ew="3" dec="N" cont="3 H" lead="D2" res="+1" score="170" mp_ns="2" mp_ew="98"/>
+      <result tab="4" bd="27" rnd="6" ns="7" ew="3" dec="S" cont="3 NT" lead="D5" res="+2" score="460" mp_ns="50" mp_ew="50"/>
+      <result tab="5" bd="1" rnd="6" ns="5" ew="2" dec="N" cont="3 S" lead="CT" res="=" score="140" mp_ns="0" mp_ew="100"/>
+      <result tab="5" bd="2" rnd="6" ns="5" ew="2" dec="W" cont="3 NT" lead="S6" res="+2" score="-460" mp_ns="10" mp_ew="90"/>
+      <result tab="5" bd="3" rnd="6" ns="5" ew="2" dec="S" cont="4 H" lead="CQ" res="-1" score="-50" mp_ns="60" mp_ew="40"/>
+      <result tab="6" bd="4" rnd="6" ns="1" ew="8" dec="W" cont="3 C" lead="SQ" res="-2" score="200" mp_ns="74" mp_ew="26"/>
+      <result tab="6" bd="5" rnd="6" ns="1" ew="8" dec="E" cont="2 S" lead="HK" res="+2" score="-170" mp_ns="14" mp_ew="86"/>
+      <result tab="6" bd="6" rnd="6" ns="1" ew="8" dec="E" cont="5 D" lead="" res="-3" score="300" mp_ns="98" mp_ew="2"/>
+      <result tab="1" bd="19" rnd="7" ns="12" ew="7" dec="N" cont="6 H" lead="" res="-1" score="-50" mp_ns="14" mp_ew="86"/>
+      <result tab="1" bd="20" rnd="7" ns="12" ew="7" dec="S" cont="3 NT" lead="" res="=" score="600" mp_ns="98" mp_ew="2"/>
+      <result tab="1" bd="21" rnd="7" ns="12" ew="7" dec="S" cont="4 H" lead="" res="=" score="620" mp_ns="26" mp_ew="74"/>
+      <result tab="2" bd="22" rnd="7" ns="11" ew="1" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="23" rnd="7" ns="11" ew="1" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="24" rnd="7" ns="11" ew="1" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="3" bd="25" rnd="7" ns="10" ew="5" dec="W" cont="3 NT" lead="C5" res="+2" score="-660" mp_ns="2" mp_ew="98"/>
+      <result tab="3" bd="26" rnd="7" ns="10" ew="5" dec="N" cont="4 H" lead="DQ" res="=" score="620" mp_ns="74" mp_ew="26"/>
+      <result tab="3" bd="27" rnd="7" ns="10" ew="5" dec="N" cont="3 NT" lead="D8" res="+3" score="490" mp_ns="86" mp_ew="14"/>
+      <result tab="4" bd="1" rnd="7" ns="8" ew="4" dec="N" cont="4 S" lead="HA" res="=" score="420" mp_ns="40" mp_ew="60"/>
+      <result tab="4" bd="2" rnd="7" ns="8" ew="4" dec="W" cont="3 NT" lead="S6" res="=" score="-400" mp_ns="60" mp_ew="40"/>
+      <result tab="4" bd="3" rnd="7" ns="8" ew="4" dec="S" cont="3 NT" lead="C9" res="-1" score="-50" mp_ns="60" mp_ew="40"/>
+      <result tab="5" bd="4" rnd="7" ns="6" ew="3" dec="E" cont="3 NT" lead="CJ" res="-1" score="100" mp_ns="26" mp_ew="74"/>
+      <result tab="5" bd="5" rnd="7" ns="6" ew="3" dec="E" cont="2 S" lead="HK" res="+1" score="-140" mp_ns="74" mp_ew="26"/>
+      <result tab="5" bd="6" rnd="7" ns="6" ew="3" dec="E" cont="4 H" lead="CA" res="+1" score="-650" mp_ns="14" mp_ew="86"/>
+      <result tab="6" bd="7" rnd="7" ns="2" ew="9" dec="W" cont="3 D" lead="HA" res="+1" score="-130" mp_ns="74" mp_ew="26"/>
+      <result tab="6" bd="8" rnd="7" ns="2" ew="9" dec="W" cont="3 NT" lead="D6" res="+1" score="-430" mp_ns="26" mp_ew="74"/>
+      <result tab="6" bd="9" rnd="7" ns="2" ew="9" dec="N" cont="4 H" lead="C3" res="-2" score="-100" mp_ns="38" mp_ew="62"/>
+      <result tab="1" bd="22" rnd="8" ns="12" ew="8" dec="W" cont="4 H" lead="" res="-1" score="100" mp_ns="98" mp_ew="2"/>
+      <result tab="1" bd="23" rnd="8" ns="12" ew="8" dec="E" cont="4 H" lead="" res="-1" score="100" mp_ns="2" mp_ew="98"/>
+      <result tab="1" bd="24" rnd="8" ns="12" ew="8" dec="N" cont="4 S" lead="" res="=" score="420" mp_ns="62" mp_ew="38"/>
+      <result tab="2" bd="25" rnd="8" ns="11" ew="2" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="26" rnd="8" ns="11" ew="2" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="27" rnd="8" ns="11" ew="2" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="3" bd="1" rnd="8" ns="10" ew="6" dec="N" cont="4 S" lead="HA" res="=" score="420" mp_ns="40" mp_ew="60"/>
+      <result tab="3" bd="2" rnd="8" ns="10" ew="6" dec="W" cont="3 NT" lead="S5" res="+2" score="-460" mp_ns="10" mp_ew="90"/>
+      <result tab="3" bd="3" rnd="8" ns="10" ew="6" dec="W" cont="3 C x" lead="HA" res="-2" score="500" mp_ns="100" mp_ew="0"/>
+      <result tab="4" bd="4" rnd="8" ns="9" ew="5" dec="W" cont="2 H" lead="S5" res="-1" score="100" mp_ns="26" mp_ew="74"/>
+      <result tab="4" bd="5" rnd="8" ns="9" ew="5" dec="E" cont="2 S" lead="HK" res="+2" score="-170" mp_ns="14" mp_ew="86"/>
+      <result tab="4" bd="6" rnd="8" ns="9" ew="5" dec="E" cont="4 H" lead="CA" res="=" score="-620" mp_ns="50" mp_ew="50"/>
+      <result tab="5" bd="7" rnd="8" ns="7" ew="4" dec="N" cont="3 H" lead="" res="-2" score="-200" mp_ns="26" mp_ew="74"/>
+      <result tab="5" bd="8" rnd="8" ns="7" ew="4" dec="W" cont="3 NT" lead="HT" res="+1" score="-430" mp_ns="26" mp_ew="74"/>
+      <result tab="5" bd="9" rnd="8" ns="7" ew="4" dec="W" cont="3 C" lead="HA" res="=" score="-110" mp_ns="2" mp_ew="98"/>
+      <result tab="6" bd="10" rnd="8" ns="3" ew="1" dec="E" cont="3 S" lead="HQ" res="=" score="-140" mp_ns="62" mp_ew="38"/>
+      <result tab="6" bd="11" rnd="8" ns="3" ew="1" dec="W" cont="3 S" lead="DK" res="-2" score="100" mp_ns="74" mp_ew="26"/>
+      <result tab="6" bd="12" rnd="8" ns="3" ew="1" dec="E" cont="3 D x" lead="C8" res="-3" score="500" mp_ns="98" mp_ew="2"/>
+      <result tab="1" bd="25" rnd="9" ns="12" ew="9" dec="E" cont="4 S" lead="" res="-1" score="100" mp_ns="86" mp_ew="14"/>
+      <result tab="1" bd="26" rnd="9" ns="12" ew="9" dec="N" cont="4 H" lead="" res="=" score="620" mp_ns="74" mp_ew="26"/>
+      <result tab="1" bd="27" rnd="9" ns="12" ew="9" dec="S" cont="4 H" lead="" res="-1" score="-50" mp_ns="26" mp_ew="74"/>
+      <result tab="2" bd="1" rnd="9" ns="11" ew="3" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="2" rnd="9" ns="11" ew="3" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="2" bd="3" rnd="9" ns="11" ew="3" dec="" cont="" lead="" res="" mp_ns="-9999" mp_ew="-9999"/>
+      <result tab="3" bd="4" rnd="9" ns="10" ew="7" dec="W" cont="3 H" lead="D8" res="-3" score="300" mp_ns="98" mp_ew="2"/>
+      <result tab="3" bd="5" rnd="9" ns="10" ew="7" dec="E" cont="2 S" lead="CA" res="+1" score="-140" mp_ns="74" mp_ew="26"/>
+      <result tab="3" bd="6" rnd="9" ns="10" ew="7" dec="S" cont="5 C x" lead="SA" res="-3" score="-500" mp_ns="74" mp_ew="26"/>
+      <result tab="4" bd="7" rnd="9" ns="1" ew="6" dec="N" cont="3 H" lead="CK" res="-2" score="-200" mp_ns="26" mp_ew="74"/>
+      <result tab="4" bd="8" rnd="9" ns="1" ew="6" dec="W" cont="3 NT" lead="C6" res="+1" score="-430" mp_ns="26" mp_ew="74"/>
+      <result tab="4" bd="9" rnd="9" ns="1" ew="6" dec="W" cont="4 C" lead="S9" res="-1" score="100" mp_ns="98" mp_ew="2"/>
+      <result tab="5" bd="10" rnd="9" ns="8" ew="5" dec="E" cont="2 S" lead="HQ" res="+1" score="-140" mp_ns="62" mp_ew="38"/>
+      <result tab="5" bd="11" rnd="9" ns="8" ew="5" dec="N" cont="2 D" lead="SA" res="-2" score="-100" mp_ns="50" mp_ew="50"/>
+      <result tab="5" bd="12" rnd="9" ns="8" ew="5" dec="N" cont="2 H" lead="" res="-2" score="-200" mp_ns="2" mp_ew="98"/>
+      <result tab="6" bd="13" rnd="9" ns="4" ew="2" dec="N" cont="4 S" lead="HJ" res="+2" score="680" mp_ns="38" mp_ew="62"/>
+      <result tab="6" bd="14" rnd="9" ns="4" ew="2" dec="E" cont="3 D" lead="DJ" res="+2" score="-150" mp_ns="98" mp_ew="2"/>
+      <result tab="6" bd="15" rnd="9" ns="4" ew="2" dec="N" cont="3 C" lead="C2" res="-1" score="-100" mp_ns="50" mp_ew="50"/>
+    </brsection>
+  </board_results>
+  <scores>
+    <scsection id="A">
+      <pair player_name_1="p0_1" player_name_2="p0_2" match_points="124/192" place="1" dir="H" no="3" nzb_no_1="0" nzb_no_2="1" cpoints="40" res="64.58" raw_score="64.58" handicap="0"/>
+      <pair player_name_1="p1_1" player_name_2="p1_2" match_points="120/192" place="2" dir="H" no="4" nzb_no_1="2" nzb_no_2="3" cpoints="30" res="62.5" raw_score="62.5" handicap="0"/>
+      <pair player_name_1="p2_1" player_name_2="p2_2" match_points="111/192" place="3" dir="H" no="6" nzb_no_1="4" nzb_no_2="5" cpoints="20" res="57.81" raw_score="57.81" handicap="0"/>
+      <pair player_name_1="p3_1" player_name_2="p3_2" match_points="108/192" place="4" dir="H" no="2" nzb_no_1="6" nzb_no_2="7" cpoints="10" res="56.25" raw_score="56.25" handicap="0"/>
+      <pair player_name_1="p4_1" player_name_2="p4_2" match_points="119/216" place="5" dir="H" no="12" nzb_no_1="8" nzb_no_2="9" cpoints="0" res="55.09" raw_score="55.09" handicap="0"/>
+      <pair player_name_1="p5_1" player_name_2="p5_2" match_points="107/216" place="6" dir="H" no="10" nzb_no_1="10" nzb_no_2="11" cpoints="0" res="49.54" raw_score="49.54" handicap="0"/>
+      <pair player_name_1="p6_1" player_name_2="p6_2" match_points="93/192" place="7" dir="H" no="1" nzb_no_1="12" nzb_no_2="13" cpoints="0" res="48.44" raw_score="48.44" handicap="0"/>
+      <pair player_name_1="p7_1" player_name_2="p7_2" match_points="85/192" place="8" dir="H" no="5" nzb_no_1="14" nzb_no_2="15" cpoints="0" res="44.27" raw_score="44.27" handicap="0"/>
+      <pair player_name_1="p8_1" player_name_2="p8_2" match_points="85/192" place="8" dir="H" no="9" nzb_no_1="16" nzb_no_2="17" cpoints="0" res="44.27" raw_score="44.27" handicap="0"/>
+      <pair player_name_1="p9_1" player_name_2="p9_2" match_points="67/192" place="10" dir="H" no="7" nzb_no_1="18" nzb_no_2="19" cpoints="0" res="34.9" raw_score="34.9" handicap="0"/>
+      <pair player_name_1="p10_1" player_name_2="p10_2" match_points="61/192" place="11" dir="H" no="8" nzb_no_1="20" nzb_no_2="21" cpoints="0" res="31.77" raw_score="31.77" handicap="0"/>
+    </scsection>
+  </scores>
+</session>

@@ -149,12 +149,6 @@ class TestSession(unittest.TestCase):
         self.assertEqual(session.pairs[6].score.place, 2)
         self.assertEqual(session.pairs[7].score.place, 4)
 
-    def test_fixup_places_inconsistent(self):
-        session = Session()
-        self.add_pairs(session, "1/2", "1/3")
-        self.assertRaises(InconsistentMatchPoints, session.fixup_places, 1)
-        self.assertRaises(InconsistentMatchPoints, session.fixup_places, 2)
-
     def add_pairs(self, session, *mps, dir=None):
         for mp in mps:
             pr = pair(mps=mp, dir=dir)

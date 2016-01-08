@@ -78,11 +78,6 @@ class InvalidMatchPoints(Exception):
         msg = "invalid match point value: {}".format(mps)
         super(InvalidMatchPoints, self).__init__(msg)
 
-class InconsistentMatchPoints(Exception):
-    def __init__(self, mp1, mp2):
-        msg = "inconsistent match point totals: {} / {}".format(mp1, mp2)
-        super(InconsistentMatchPoints, self).__init__(msg)
-
 MasterPoints = namedtuple('MasterPoints', ['type', 'points'])
 
 class Score(object):
@@ -301,8 +296,18 @@ class Section(object):
             raise DuplicatePairMapping(dir, dir_id, mapping[dir_id], pair_id)
         mapping[dir_id] = pair_id
 
+    def has_pair_id(self, dir, id):
+        return id in self.id_mappings[dir]
+
     def get_pair_id(self, dir, id):
-        return self.id_mappings[dir][id]
+        if self.has_pair_id(dir, id):
+
+            # Regular pair
+            return self.id_mappings[dir][id]
+        else:
+
+            # Phantom pair
+            return "{} phantom".format(self.id)
 
     @staticmethod
     def fromxml(section):
@@ -391,8 +396,12 @@ class Session(object):
                 traveller = Traveller.fromxml(result, sdata)
                 sdata.boards[board].append(traveller)
                 for dir in DIRECTIONS:
-                    pair = self.get_pair(sec_id, dir, result.get(dir))
-                    pair.boards_played += 1
+                    if self.has_pair(sec_id, dir, result.get(dir)):
+                        pair = self.get_pair(sec_id, dir, result.get(dir))
+                        pair.boards_played += 1
+
+    def has_pair(self, sec_id, dir, dir_id):
+        return self.sections[sec_id].has_pair_id(dir, dir_id)
 
     def get_pair(self, sec_id, dir, dir_id):
         pair_id = self.sections[sec_id].get_pair_id(dir, dir_id)
@@ -400,8 +409,8 @@ class Session(object):
 
     def fixup_scores(self):
         for section in self.sections.values():
-            for boards in section.boards.values():
-                for traveller in boards:
+            for travellers in section.boards.values():
+                for traveller in travellers:
                     if traveller.score == 'Adj':
 
                         # TODO: Need to figure this out from the MPs awarded
@@ -420,23 +429,18 @@ class Session(object):
             else:
                 rank = ranks[0]
 
-            if expected is None:
-                expected = pair.matchpoints[1]
-
-            if expected != pair.matchpoints[1]:
-                raise InconsistentMatchPoints(expected, pair.matchpoints[1])
-
-            rank.append((pair.matchpoints[0], pair))
+            percentage = Decimal(pair.matchpoints[0]) / Decimal(pair.matchpoints[1]) * 100
+            rank.append((percentage.quantize(DECIMAL_001), pair))
 
         for rank in ranks:
             place = None
             prev_score = None
             rank.sort(key=lambda x: (x[0], x[1].id), reverse=True)
-            for (ii, (mps, pair)) in enumerate(rank):
-                if mps != prev_score:
+            for (ii, (percent, pair)) in enumerate(rank):
+                if percent != prev_score:
                     place = ii + 1
                 pair.score.place = place
-                prev_score = mps
+                prev_score = percent
 
 class Event(object):
     def __init__(self,
