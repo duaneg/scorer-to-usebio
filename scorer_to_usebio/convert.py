@@ -225,14 +225,16 @@ class Traveller(object):
         mp_ns = float(result.get('mp_ns')) / 10
         mp_ew = float(result.get('mp_ew')) / 10
 
-        # Annoying: need to convert from contract/result to count of tricks won
         contract = result.get('cont')
+
+        # Annoying: need to convert from contract/result to count of tricks won
+        tricks = Traveller.get_trick_count(contract, result.get('res'))
 
         return Traveller(ns, ew,
                          contract,
                          result.get('dec'),
                          result.get('lead'),
-                         Traveller.get_trick_count(contract, result.get('res')),
+                         tricks,
                          result.get('score'),
                          mp_ns, mp_ew)
 
