@@ -16,13 +16,11 @@ except ImportError:
 from collections import defaultdict
 
 # TODO:
-# * usebio 1.2
 # * Teams
 # * Other scoring types
 # * Phantom
 # * No master points awarded
 # * Adjusted scores (event level)
-# * Tied places
 # * Players without NZB numbers
 # * Missing/bad data?
 
