@@ -44,6 +44,7 @@ BOARD_SCORINGS = [
     'OTHER',
 ]
 
+DECIMAL_1 = Decimal(1)
 DECIMAL_001 = Decimal('0.01')
 
 DIRECTIONS = ['ns', 'ew']
@@ -221,8 +222,8 @@ class Traveller(object):
         self.lead = lead or None
         self.tricks = tricks
         self.score = score or None
-        self.ns_mps = int(ns_mps)
-        self.ew_mps = int(ew_mps)
+        self.ns_mps = ns_mps
+        self.ew_mps = ew_mps
 
     @staticmethod
     def fromxml(result, section):
@@ -232,8 +233,14 @@ class Traveller(object):
         #
         # Nothing we can do about the floor bit, but divide by 10 to get close
         # to proper MP values.
-        mp_ns = float(result.get('mp_ns')) / 10
-        mp_ew = float(result.get('mp_ew')) / 10
+        #
+        # Phantoms are recorded with -9999 hard-coded. Replace that with 0.
+        def get_mps(dir):
+            mps = result.get('mp_%s' % dir)
+            if mps == '-9999':
+                return Decimal(0)
+            else:
+                return Decimal(mps) / 10
 
         contract = result.get('cont')
 
@@ -246,7 +253,7 @@ class Traveller(object):
                          result.get('lead'),
                          tricks,
                          result.get('score'),
-                         mp_ns, mp_ew)
+                         get_mps('ns'), get_mps('ew'))
 
     @staticmethod
     def get_trick_count(contract, result):
@@ -408,14 +415,57 @@ class Session(object):
         return self.pairs[pair_id]
 
     def fixup_scores(self):
+
+        # Travellers that need adjusting
+        adjust = []
+
+        # Count of MPs scored for a given board
+        #
+        # TODO: This is a heuristic approach where we rely on the MPs for each
+        #       board as reported by scorer. It will fail if the MPs for each
+        #       board are not consistent across sections!
+        #
+        # A better way would be to calculate the MPs that should be awarded
+        # ourselves. However I've not been able to reliably reverse-engineer
+        # what scorer is doing, so leave that for now.
+        #
+        # NOTE: Using mps = len(self.pairs) - 2 *almost* works, but fails for
+        #       movements with a phantom
+        mps_scored_count = defaultdict(int)
+
+        # Find adjusted travellers and MPs scored for each board
         for section in self.sections.values():
             for travellers in section.boards.values():
                 for traveller in travellers:
+                    total_mps = (traveller.ns_mps + traveller.ew_mps).quantize(DECIMAL_1)
+                    mps_scored_count[total_mps] += 1
                     if traveller.score == 'Adj':
+                        adjust.append(traveller)
 
-                        # TODO: Need to figure this out from the MPs awarded
-                        #       This is somewhat involved, so for now:
-                        traveller.score = 'A5050'
+        # Find the most commonly used MP score
+        # TODO: Check the MP counts look sane (i.e. should be almost all the same)
+        mps_scored = sorted([(count, score) for (score, count) in mps_scored_count.items()])
+        mps = mps_scored[-1][1]
+
+        # Check the adjusted value is in multiples of 10%
+        # Anything else likely means we've got unexpected input
+        def unexpected(score):
+            return (score / 10) != (score / 10).quantize(DECIMAL_1)
+
+        # Set scores on adjusted travellers
+        for traveller in adjust:
+            ns = self.percentage(traveller.ns_mps, mps, DECIMAL_1)
+            ew = self.percentage(traveller.ew_mps, mps, DECIMAL_1)
+            adjustment = "A{}{}".format(ns, ew)
+            if unexpected(ns) or unexpected(ew):
+                logging.warning("unexpected adjustment for %s %s/%s: %s",
+                                section.id, traveller.ns, traveller.ew, adjustment)
+            traveller.score = adjustment
+
+    @staticmethod
+    def percentage(mp_numerator, mp_denominator, quant=DECIMAL_001):
+        percent = Decimal(mp_numerator) / Decimal(mp_denominator) * 100
+        return percent.quantize(quant)
 
     def fixup_places(self, winners):
         ranks = [[]]
@@ -429,8 +479,7 @@ class Session(object):
             else:
                 rank = ranks[0]
 
-            percentage = Decimal(pair.matchpoints[0]) / Decimal(pair.matchpoints[1]) * 100
-            rank.append((percentage.quantize(DECIMAL_001), pair))
+            rank.append((self.percentage(*pair.matchpoints), pair))
 
         for rank in ranks:
             place = None

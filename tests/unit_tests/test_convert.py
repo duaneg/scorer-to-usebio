@@ -118,12 +118,24 @@ class TestSession(unittest.TestCase):
         self.assertEqual(p2[1].id, '(B) 0 EW')
 
     def test_fixup_scores(self):
-        traveller = Traveller('1', '2', '1 NT', 'N', '', 7, 'Adj', 14.4, 9.6)
         session = Session()
         session.sections['A'] = Section('A', False)
-        session.sections['A'].boards[1].append(traveller)
-        session.fixup_scores()
-        self.assertEqual(session.sections['A'].boards[1][0].score, 'A5050')
+        session.sections['A'].boards[1].extend([
+            Traveller('', '', '', '', '', 7, '', Decimal('3'), Decimal('3')),
+            Traveller('', '', '', '', '', 7, '', Decimal('3'), Decimal('3')),
+            Traveller('', '', '', '', '', 7, 'Adj', Decimal('3.6'), Decimal('3.6')),
+            Traveller('', '', '', '', '', 7, 'Adj', Decimal('2.4'), Decimal('2.4')),
+            Traveller('', '', '', '', '', 7, 'Adj', Decimal('2.4'), Decimal('3.6')),
+            Traveller('', '', '', '', '', 7, 'Adj', Decimal('3'), Decimal('3')),
+            Traveller('', '', '', '', '', 7, 'Adj', Decimal('3.1'), Decimal('3.1')),
+        ])
+        with self.assertLogs(level='WARNING') as cm:
+            session.fixup_scores()
+        self.assertEqual(session.sections['A'].boards[1][2].score, 'A6060')
+        self.assertEqual(session.sections['A'].boards[1][3].score, 'A4040')
+        self.assertEqual(session.sections['A'].boards[1][4].score, 'A4060')
+        self.assertEqual(session.sections['A'].boards[1][5].score, 'A5050')
+        self.assertEqual(session.sections['A'].boards[1][6].score, 'A5252')
 
     def test_fixup_places_single_winner(self):
         session = Session()
