@@ -18,7 +18,6 @@ from collections import defaultdict
 # TODO:
 # * Teams
 # * Other scoring types
-# * Phantom
 # * No master points awarded
 # * Adjusted scores (event level)
 # * Players without NZB numbers
@@ -227,21 +226,29 @@ class Traveller(object):
 
     @staticmethod
     def fromxml(result, section):
-        (ns, ew) = [section.get_pair_id(dir, result.get(dir)) for dir in DIRECTIONS]
 
         # Scorer records what looks like floor(MPs * 10).
         #
         # Nothing we can do about the floor bit, but divide by 10 to get close
         # to proper MP values.
         #
-        # Phantoms are recorded with -9999 hard-coded. Replace that with 0.
+        # Phantoms are recorded with -9999 MPs hard-coded: return None in this case.
         def get_mps(dir):
             mps = result.get('mp_%s' % dir)
             if mps == '-9999':
-                return Decimal(0)
+                return None
             else:
                 return Decimal(mps) / 10
 
+        # If this is a phantom then just skip it (i.e. return None).
+        #
+        # This is not a pretty way of detecting phantoms, but it seems reliable
+        # and will do for now.
+        (ns_mps, ew_mps) = get_mps('ns'), get_mps('ew')
+        if ns_mps is None or ew_mps is None:
+            return None
+
+        (ns, ew) = [section.get_pair_id(dir, result.get(dir)) for dir in DIRECTIONS]
         contract = result.get('cont')
 
         # Annoying: need to convert from contract/result to count of tricks won
@@ -253,7 +260,7 @@ class Traveller(object):
                          result.get('lead'),
                          tricks,
                          result.get('score'),
-                         get_mps('ns'), get_mps('ew'))
+                         ns_mps, ew_mps)
 
     @staticmethod
     def get_trick_count(contract, result):
@@ -308,13 +315,10 @@ class Section(object):
 
     def get_pair_id(self, dir, id):
         if self.has_pair_id(dir, id):
-
-            # Regular pair
             return self.id_mappings[dir][id]
         else:
-
-            # Phantom pair
-            return "{} phantom".format(self.id)
+            logging.error("unknown pair ID '%s' for %s", id, dir)
+            return "unknown: {}".format(self.id)
 
     @staticmethod
     def fromxml(section):
@@ -400,7 +404,12 @@ class Session(object):
             sdata = self.sections[sec_id]
             for result in section.findall("result"):
                 board = int(result.get('bd'))
+
+                # Traveller will be None if this was a phantom board
                 traveller = Traveller.fromxml(result, sdata)
+                if not traveller:
+                    continue
+
                 sdata.boards[board].append(traveller)
                 for dir in DIRECTIONS:
                     if self.has_pair(sec_id, dir, result.get(dir)):
@@ -430,7 +439,8 @@ class Session(object):
         # what scorer is doing, so leave that for now.
         #
         # NOTE: Using mps = len(self.pairs) - 2 *almost* works, but fails for
-        #       movements with a phantom
+        #       movements with a phantom (TODO: Check this is still true after
+        #       changes to how phantom is handled).
         mps_scored_count = defaultdict(int)
 
         # Find adjusted travellers and MPs scored for each board
