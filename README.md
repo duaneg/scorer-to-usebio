@@ -10,7 +10,7 @@ Installation
 
 Usage
 -----
- * Run the GUI:
+ * Run the GUI (note that you will need PyQt5 installed!):
 
         > ScorerConverter
 
