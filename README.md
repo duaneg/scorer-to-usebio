@@ -1,7 +1,7 @@
 scorer-to-usebio
 ================
 
-Converts from the NZ Bridge Scorer XML results format to USEBIO 1.1.
+Converts from the NZ Bridge Scorer XML results format to USEBIO 1.2.
 
 Installation
 ------------
