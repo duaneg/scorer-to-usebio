@@ -48,24 +48,28 @@ DECIMAL_001 = Decimal('0.01')
 
 DIRECTIONS = ['ns', 'ew']
 
-class DuplicatePair(Exception):
-    def __init__(self, pair):
-        super(DuplicatePair, self).__init__("duplicate pair: {}".format(pair))
-
-class DuplicatePairMapping(Exception):
-    def __init__(self, dir, dir_id, pair_id1, pair_id2):
-        msg = "duplicate mapping for {} {}: {}/{}".format(dir_id, dir, pair_id1, pair_id2)
-        super(DuplicatePairMapping, self).__init__(msg)
-
 class InvalidEventType(Exception):
     def __init__(self, type):
         super(InvalidEventType, self).__init__("invalid/unhandled scoring type '{}'".format(type))
 
-class InvalidDirection(Exception):
+class InvalidResultsException(Exception):
+    def __init__(self, msg):
+        super().__init__(msg)
+
+class DuplicatePair(InvalidResultsException):
+    def __init__(self, pair):
+        super(DuplicatePair, self).__init__("duplicate pair: {}".format(pair))
+
+class DuplicatePairMapping(InvalidResultsException):
+    def __init__(self, dir, dir_id, pair_id1, pair_id2):
+        msg = "duplicate mapping for {} {}: {}/{}".format(dir_id, dir, pair_id1, pair_id2)
+        super(DuplicatePairMapping, self).__init__(msg)
+
+class InvalidDirection(InvalidResultsException):
     def __init__(self, dir):
         super(InvalidDirection, self).__init__("invalid/unknown direction '{}'".format(dir))
 
-class HandicapMismatch(Exception):
+class HandicapMismatch(InvalidResultsException):
     def __init__(self, handicapped, handicap_value):
         if handicapped:
             msg = "handicap value not given for handicapped event"
@@ -73,7 +77,7 @@ class HandicapMismatch(Exception):
             msg = "handicap value {} given for non-handicapped event".format(handicap_value)
         super(HandicapMismatch, self).__init__(msg)
 
-class InvalidMatchPoints(Exception):
+class InvalidMatchPoints(InvalidResultsException):
     def __init__(self, mps):
         msg = "invalid match point value: {}".format(mps)
         super(InvalidMatchPoints, self).__init__(msg)
@@ -602,15 +606,12 @@ def convert(file, include_dtd = False):
         raise ValueError("DTDs are only supported when using lxml")
 
     dom = ET.parse(file)
-    converted = convert_xml(dom)
+    event = Event.fromxml(dom.getroot())
+    converted = event.get_usebio_xml()
     tree = ET.ElementTree(converted)
     if include_dtd:
         add_dtd(tree)
-    return tree
-
-def convert_xml(dom):
-    event = Event.fromxml(dom.getroot())
-    return event.get_usebio_xml()
+    return (event, tree)
 
 def element(parent, name, value = None):
     assert parent is not None

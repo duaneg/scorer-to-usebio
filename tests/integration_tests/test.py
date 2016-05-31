@@ -24,7 +24,7 @@ class IntegrationTest(unittest.TestCase):
 
         assert len(examples) > 0
         for path in examples:
-            converted = scorer_to_usebio.convert(path, False)
+            converted = scorer_to_usebio.convert(path, False)[1]
             expected = ET.parse(os.path.join(CONVERTED_DIR, os.path.basename(path)))
             converted_text = ET.tostring(converted.getroot())
             expected_text = ET.tostring(expected.getroot())

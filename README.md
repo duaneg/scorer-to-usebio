@@ -10,7 +10,11 @@ Installation
 
 Usage
 -----
- * Convert a file:
+ * Run the GUI:
+
+        > ScorerConverter
+
+ * Convert a file on the command-line:
 
         > scorer_to_usebio -p examples/pairs.xml
 
@@ -34,6 +38,7 @@ Usage
 Dependencies
 ------------
  * Python 3.5 (will probably work with earlier 3.x versions, but untested)
+ * PyQt5 (optional, required for the GUI)
  * lxml (optional, required for DTD & pretty-printing support)
  * nose (optional for running tests)
  * coverage (optional for checking test code coverage)

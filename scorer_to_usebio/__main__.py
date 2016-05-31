@@ -22,7 +22,7 @@ def include_dtd(opts):
         return False
 
 def process_file(opts, file):
-    converted = convert(file, include_dtd(opts))
+    converted = convert(file, include_dtd(opts))[1]
     params = {
         'encoding': 'utf-8'
     }
