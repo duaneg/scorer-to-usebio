@@ -42,29 +42,36 @@ class PersistentState(object):
         self.selected_filter = all_filter
 
     def save(self):
-        defs = PersistentState()
         settings = PersistentState.create_settings()
         settings.clear()
-        for setting in PersistentState.__slots__:
-            value = getattr(self, setting)
-            if value != getattr(defs, setting):
-                settings.setValue(setting, value)
+        for (setting, value) in self.get_non_defaults():
+            settings.setValue(setting, value)
         del settings
-        logging.debug("saved persistent state: %s", self)
+        logging.debug("Saved persistent state: %s", self)
 
     def load(self):
         self.clear()
         settings = PersistentState.create_settings()
         for setting in PersistentState.__slots__:
             setattr(self, setting, settings.value(setting, getattr(self, setting)))
-        logging.debug("loaded persistent state: %s", self)
+        logging.debug("Loaded persistent state: %s", self)
+
+    def get_non_defaults(self):
+        defs = PersistentState()
+        for setting in PersistentState.__slots__:
+            value = getattr(self, setting)
+            if value != getattr(defs, setting):
+                yield (setting, value)
+
+    def __str__(self):
+        return str(dict(list(self.get_non_defaults())))
 
     @staticmethod
     def create_settings():
         return QtCore.QSettings("scorer_to_usebio", "ScorerConverter")
 
 class ScorerConverter(QtWidgets.QMainWindow):
-    states = {
+    status_text = {
         'select': 'Please select a scorer results file to convert.',
         'converted_ok': 'Converted: please upload to Pianola and then (optionally) delete.',
         'converted_error': 'An error occurred converting the results: please review the log.',
@@ -98,8 +105,8 @@ class ScorerConverter(QtWidgets.QMainWindow):
         buttonLayout.addWidget(exitButton)
 
         logDisplay = QLogDisplay(self)
+        logDisplay.setLevel(logging.INFO)
         logging.getLogger().addHandler(logDisplay)
-        logging.getLogger().setLevel(logging.INFO)
 
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.addWidget(logDisplay.widget)
@@ -108,12 +115,12 @@ class ScorerConverter(QtWidgets.QMainWindow):
         mainWidget = QtWidgets.QWidget()
         mainWidget.setLayout(mainLayout)
 
-        logging.info("Saving converted results to '{}'".format(self.persistent.output_directory))
+        logging.debug("Saving converted results to '{}'".format(self.persistent.output_directory))
 
         self.resize(640, 480)
         self.setWindowTitle("Scorer To USEBIO Converter")
         self.setCentralWidget(mainWidget)
-        self.setState('select')
+        self.statusBar().showMessage(ScorerConverter.status_text['select'])
 
     def select(self):
         (filename, filter) = QtWidgets.QFileDialog.getOpenFileName(
@@ -132,16 +139,14 @@ class ScorerConverter(QtWidgets.QMainWindow):
         except FileNotFoundError:
             pass
 
-        self.saveState()
+        self.persistent.save()
 
-        logging.info("Converting results: '%s'...", filename)
         self.convert(filename)
 
     def convert(self, filename):
         ok = False
         try:
             (event, xml) = scorer_to_usebio.convert(filename)
-            logging.info("Converted results, saving...")
             self.save(event, xml)
             ok = True
         except IOError as err:
@@ -156,7 +161,12 @@ class ScorerConverter(QtWidgets.QMainWindow):
             logging.error("Could not convert results: %s", err)
             logging.info("Only match point scored events are supported at this time")
 
-        self.setState('converted_ok' if ok else 'converted_error')
+        if ok:
+            self.deleteButton.setEnabled(True)
+            self.statusBar().showMessage(ScorerConverter.status_text['converted_ok'])
+        else:
+            self.deleteButton.setEnabled(False)
+            self.statusBar().showMessage(ScorerConverter.status_text['converted_error'])
 
     def save(self, event, xml):
         path = pathlib.Path(self.persistent.output_directory) / get_default_filename(event)
@@ -169,19 +179,15 @@ class ScorerConverter(QtWidgets.QMainWindow):
         try:
             self.saved.unlink()
             logging.info("Deleted converted results: %s", self.saved)
-            self.setState('deleted')
+            self.statusBar().showMessage(ScorerConverter.status_text['deleted'])
         except IOError as err:
             logging.error("Error deleting converted results: %s", err)
-            self.setState('select')
+            self.statusBar().showMessage(ScorerConverter.status_text['select'])
+
         self.saved = None
         self.results_file = None
+        self.deleteButton.setEnabled(False)
 
     def exit(self):
-        self.saveState()
+        self.persistent.save()
         self.app.quit()
-
-    def setState(self, state):
-        assert state in ScorerConverter.states
-        self.state = state
-        self.deleteButton.setEnabled(self.state == 'converted_ok')
-        self.statusBar().showMessage(ScorerConverter.states[state])
