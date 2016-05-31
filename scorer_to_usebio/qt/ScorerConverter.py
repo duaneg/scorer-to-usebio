@@ -87,12 +87,15 @@ class ScorerConverter(QtWidgets.QMainWindow):
         self.initUI()
 
     def initUI(self):
-        selectButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("document-open"), "&Select")
+        selectButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("document-open"), "&Select file")
         selectButton.clicked.connect(self.select)
 
         self.deleteButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("edit-delete"), "&Delete")
         self.deleteButton.setEnabled(False)
         self.deleteButton.clicked.connect(self.delete)
+
+        outputButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("document-save-as"), "&Output directory")
+        outputButton.clicked.connect(self.set_output)
 
         exitButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("application-exit"), "&Exit")
         exitButton.clicked.connect(self.close)
@@ -101,6 +104,8 @@ class ScorerConverter(QtWidgets.QMainWindow):
         buttonLayout.addWidget(selectButton)
         buttonLayout.addStretch()
         buttonLayout.addWidget(self.deleteButton)
+        buttonLayout.addStretch()
+        buttonLayout.addWidget(outputButton)
         buttonLayout.addStretch()
         buttonLayout.addWidget(exitButton)
 
@@ -114,8 +119,6 @@ class ScorerConverter(QtWidgets.QMainWindow):
 
         mainWidget = QtWidgets.QWidget()
         mainWidget.setLayout(mainLayout)
-
-        logging.debug("Saving converted results to '{}'".format(self.persistent.output_directory))
 
         self.resize(640, 480)
         self.setWindowTitle("Scorer To USEBIO Converter")
@@ -187,6 +190,17 @@ class ScorerConverter(QtWidgets.QMainWindow):
         self.saved = None
         self.results_file = None
         self.deleteButton.setEnabled(False)
+
+    def set_output(self):
+        dir = QtWidgets.QFileDialog.getExistingDirectory(
+            self,
+            'Choose converted results output directory',
+            self.persistent.output_directory)
+        if not dir:
+            return
+
+        self.persistent.output_directory = dir
+        self.persistent.save()
 
     def exit(self):
         self.persistent.save()
