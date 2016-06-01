@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='scorer-to-usebio',
-      version='0.2',
+      version='0.3-dev',
       description='Converts from Bridge NZ Scorer format to USEBIO 1.1',
       url='https://github.com/duaneg/scorer-to-usebio',
       author='Duane Griffin',

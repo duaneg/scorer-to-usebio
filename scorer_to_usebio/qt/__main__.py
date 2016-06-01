@@ -49,7 +49,7 @@ def configure_logging():
 
 try:
     import sys
-    from . import ScorerConverter
+    from scorer_to_usebio.qt import ScorerConverter
     from PyQt5 import QtWidgets
 
     def main():
