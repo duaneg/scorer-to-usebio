@@ -259,7 +259,7 @@ class Traveller(object):
         tricks = Traveller.get_trick_count(contract, result.get('res'))
 
         return Traveller(ns, ew,
-                         contract,
+                         Traveller.convert_contract(contract),
                          result.get('dec'),
                          result.get('lead'),
                          tricks,
@@ -271,8 +271,12 @@ class Traveller(object):
         parts = contract.split()
 
         # Check for passed hands/adjusted/phantom(?)
-        if len(parts) != 2:
+        if len(parts) < 2:
             return 0
+
+        # Sanity check: should have no more than three components
+        if len(parts) > 3:
+            raise InvalidResultsException("invalid contract: %s" % contract)
 
         # Otherwise the first part is the level of the contract
         # Add six to get the target number of tricks
@@ -283,6 +287,16 @@ class Traveller(object):
             return tricks
         else:
             return tricks + int(result)
+
+    @staticmethod
+    def convert_contract(contract):
+
+        # Pianola expects contract without spaces.
+        #
+        # Undoubled contracts work with a space but doubled contracts will fail
+        # (and get interpreted as a passed hand). Rather than fuss around just
+        # always get rid of all spaces.
+        return contract.replace(' ', '')
 
     def get_usebio_xml(self):
         xml = ET.Element('TRAVELLER_LINE')
