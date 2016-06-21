@@ -475,10 +475,10 @@ class Session(object):
         mps_scored = sorted([(count, score) for (score, count) in mps_scored_count.items()])
         mps = mps_scored[-1][1]
 
-        # Check the adjusted value is in multiples of 10%
+        # Check the adjusted value is in multiples of 5%
         # Anything else likely means we've got unexpected input
         def unexpected(score):
-            return (score / 10) != (score / 10).quantize(DECIMAL_1)
+            return (score / 5) != (score / 5).quantize(DECIMAL_1)
 
         # Set scores on adjusted travellers
         for traveller in adjust:
