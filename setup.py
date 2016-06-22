@@ -12,7 +12,7 @@ setup(name='scorer-to-usebio',
       entry_points={
           'console_scripts': [
               'scorer_to_usebio = scorer_to_usebio.__main__:main',
-              'ScorerConverter = scorer_to_usebio.qt.__main__:main',
+              'ScorerConverter = scorer_to_usebio:gui',
           ],
       },
       test_suite='nose.collector',

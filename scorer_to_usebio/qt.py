@@ -1,24 +1,22 @@
 import logging
-import pathlib
+import logging.config
 import string
 import sys
 import tempfile
+from pathlib import Path
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import scorer_to_usebio
-
-alphanum = string.digits + string.ascii_letters
-filename_trans_table = str.maketrans(alphanum + "/ ", alphanum + "-_")
+import scorer_to_usebio.qt
 
 all_filter = 'All files (*)'
 scorer_filter = 'Scorer results files (*.xml)'
 
-def sanitise(text):
-    return text.translate(filename_trans_table)
+alphanum = string.digits + string.ascii_letters
+filename_trans_table = str.maketrans(alphanum + "/ ", alphanum + "-_")
 
-def get_default_filename(event):
-    return "{}-{}.xml".format(sanitise(event.event_date), sanitise(event.event_name))
+log_file = Path.home() / '.scorer_to_usebio' / 'ScorerConverter.log'
 
 class QLogDisplay(logging.Handler):
     def __init__(self, parent):
@@ -82,30 +80,31 @@ class ScorerConverter(QtWidgets.QMainWindow):
         super().__init__()
         self.app = app
         self.results_file = None
+        self.saved = None
         self.persistent = PersistentState()
         self.persistent.load()
         self.initUI()
 
     def initUI(self):
-        selectButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("document-open"), "&Select file")
-        selectButton.clicked.connect(self.select)
+        self.selectButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("document-open"), "&Select file")
+        self.selectButton.clicked.connect(self.select)
 
         self.deleteButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("edit-delete"), "&Delete")
         self.deleteButton.setEnabled(False)
         self.deleteButton.clicked.connect(self.delete)
 
-        outputButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("document-save-as"), "&Output directory")
-        outputButton.clicked.connect(self.set_output)
+        self.outputButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("document-save-as"), "&Output directory")
+        self.outputButton.clicked.connect(self.set_output)
 
         exitButton = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("application-exit"), "&Exit")
         exitButton.clicked.connect(self.close)
 
         buttonLayout = QtWidgets.QHBoxLayout()
-        buttonLayout.addWidget(selectButton)
+        buttonLayout.addWidget(self.selectButton)
         buttonLayout.addStretch()
         buttonLayout.addWidget(self.deleteButton)
         buttonLayout.addStretch()
-        buttonLayout.addWidget(outputButton)
+        buttonLayout.addWidget(self.outputButton)
         buttonLayout.addStretch()
         buttonLayout.addWidget(exitButton)
 
@@ -138,7 +137,7 @@ class ScorerConverter(QtWidgets.QMainWindow):
         self.results_file = filename
         self.persistent.selected_filter = filter
         try:
-            self.persistent.results_directory = str(pathlib.Path(filename).parent.resolve())
+            self.persistent.results_directory = str(Path(filename).parent.resolve())
         except FileNotFoundError:
             pass
 
@@ -172,7 +171,7 @@ class ScorerConverter(QtWidgets.QMainWindow):
             self.statusBar().showMessage(ScorerConverter.status_text['converted_error'])
 
     def save(self, event, xml):
-        path = pathlib.Path(self.persistent.output_directory) / get_default_filename(event)
+        path = Path(self.persistent.output_directory) / scorer_to_usebio.qt.get_default_filename(event)
         with path.open('wb') as file:
             xml.write(file, encoding='utf-8')
         self.saved = path
@@ -205,3 +204,63 @@ class ScorerConverter(QtWidgets.QMainWindow):
     def exit(self):
         self.persistent.save()
         self.app.quit()
+
+def get_default_filename(event):
+    return "{}-{}.xml".format(sanitise(event.event_date), sanitise(event.event_name))
+
+def sanitise(text):
+    return text.translate(filename_trans_table)
+
+def configure_logging():
+    from PyQt5 import QtCore
+
+    log_file.parent.mkdir(parents=True, exist_ok=True)
+
+    logging.config.dictConfig({
+        'version': 1,
+        'disable_existing_loggers': False,
+
+        'formatters': {
+            'brief': {
+                'format': '%(message)s',
+            },
+            'detailed': {
+                'format': '%(asctime)s %(module)-17s %(lineno)-4d %(levelname)-8s %(message)s',
+            },
+        },
+
+        'handlers': {
+            'console': {
+                'level':'DEBUG',
+                'formatter': 'brief',
+                'class': 'logging.StreamHandler',
+            },
+
+            'file': {
+                'level':'DEBUG',
+                'formatter': 'detailed',
+                'class': 'logging.handlers.RotatingFileHandler',
+                'filename': str(log_file),
+                'maxBytes': 1024 * 1024,
+                'backupCount': 1,
+            },
+        },
+
+        'root': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True
+        }
+    })
+
+    logging.debug('Logging to: %s', log_file)
+
+def main():
+    configure_logging()
+    app = QtWidgets.QApplication(sys.argv)
+    sc = ScorerConverter(app)
+    sc.show()
+    app.exec_()
+
+if __name__ == "__main__":
+    main()
