@@ -231,7 +231,7 @@ def configure_logging():
 
         'handlers': {
             'console': {
-                'level':'DEBUG',
+                'level':'WARNING',
                 'formatter': 'brief',
                 'class': 'logging.StreamHandler',
             },
