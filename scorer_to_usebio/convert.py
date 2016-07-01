@@ -1,7 +1,7 @@
 import logging
 
 from collections import namedtuple, OrderedDict
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 
 using_lxml = False
 try:
@@ -169,8 +169,8 @@ class Pair(object):
         self.players = players
         self.score = score
         try:
-            self.matchpoints = [int(x) for x in mps.split('/')]
-        except ValueError:
+            self.matchpoints = [Decimal(x) for x in mps.split('/')]
+        except InvalidOperation:
             raise InvalidMatchPoints(mps)
         if len(self.matchpoints) != 2:
             raise InvalidMatchPoints(mps)
