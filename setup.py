@@ -7,7 +7,7 @@ setup(name='scorer-to-usebio',
       author='Duane Griffin',
       author_email='duaneg@dghda.com',
       license='GNU AGPLv3+',
-      packages=['scorer_to_usebio', 'scorer_to_usebio.qt'],
+      packages=['scorer_to_usebio'],
       include_package_data=True,
       entry_points={
           'console_scripts': [
