@@ -29,7 +29,10 @@ def process_file(opts, file):
     if using_lxml:
         params['pretty_print'] = opts.pretty
         params['xml_declaration'] = opts.dtd
-    converted.write(sys.stdout.buffer, **params)
+    if hasattr(sys.stdout, 'buffer'):
+        converted.write(sys.stdout.buffer, **params)
+    else:
+        converted.write(sys.stdout, **params)
     sys.stdout.flush()
 
 def process_files(opts):

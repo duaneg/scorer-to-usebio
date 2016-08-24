@@ -5,14 +5,23 @@ try:
 
     app = QtWidgets.QApplication([])
 except ImportError:
+    from collections import namedtuple
     app = None
+    scorer_to_usebio = namedtuple('scorer_to_usebio', ['qt'])
+    scorer_to_usebio.qt = namedtuple('qt', ['get_default_filename', 'PersistentState'])
 
 import string
 import random
 import tempfile
 import unittest
-from pathlib import Path
-from unittest.mock import patch
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 original_get_default_filename = scorer_to_usebio.qt.get_default_filename
 

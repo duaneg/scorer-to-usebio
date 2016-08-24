@@ -18,9 +18,11 @@ class IntegrationTest(unittest.TestCase):
     def test(self):
         examples = []
 
-        for file in os.scandir(EXAMPLES_DIR):
-            if file.is_file() and file.name.endswith('.xml'):
-                examples.append(file.path)
+        for root, dirs, files in os.walk(EXAMPLES_DIR):
+            for file in files:
+                path = os.path.join(root, file)
+                if os.path.isfile(path) and path.endswith('.xml'):
+                    examples.append(path)
 
         assert len(examples) > 0
         for path in examples:

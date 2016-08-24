@@ -129,7 +129,10 @@ class TestSession(unittest.TestCase):
             Traveller('', '', '', '', '', 7, 'Adj', Decimal('3'), Decimal('3')),
             Traveller('', '', '', '', '', 7, 'Adj', Decimal('3.1'), Decimal('3.1')),
         ])
-        with self.assertLogs(level='WARNING') as cm:
+        if hasattr(self, 'assertLogs'):
+            with self.assertLogs(level='WARNING') as cm:
+                session.fixup_scores()
+        else:
             session.fixup_scores()
         self.assertEqual(session.sections['A'].boards[1][2].score, 'A6060')
         self.assertEqual(session.sections['A'].boards[1][3].score, 'A4040')
@@ -139,7 +142,7 @@ class TestSession(unittest.TestCase):
 
     def test_fixup_places_single_winner(self):
         session = Session()
-        self.add_pairs(session, "0/3", "2/3", "1/3", "1/3")
+        self.add_pairs(session, None, "0/3", "2/3", "1/3", "1/3")
         session.fixup_places(1)
         print(session.pairs)
         self.assertEqual(session.pairs[0].score.place, 4)
@@ -149,8 +152,8 @@ class TestSession(unittest.TestCase):
 
     def test_fixup_places_two_winners(self):
         session = Session()
-        self.add_pairs(session, "3/3", "2/3", "1/3", "1/3", dir='ns')
-        self.add_pairs(session, "3/3", "1/3", "2/3", "0/3", dir='ew')
+        self.add_pairs(session, 'ns', "3/3", "2/3", "1/3", "1/3")
+        self.add_pairs(session, 'ew', "3/3", "1/3", "2/3", "0/3")
         session.fixup_places(2)
         self.assertEqual(session.pairs[0].score.place, 1)
         self.assertEqual(session.pairs[1].score.place, 2)
@@ -161,7 +164,7 @@ class TestSession(unittest.TestCase):
         self.assertEqual(session.pairs[6].score.place, 2)
         self.assertEqual(session.pairs[7].score.place, 4)
 
-    def add_pairs(self, session, *mps, dir=None):
+    def add_pairs(self, session, dir, *mps):
         for mp in mps:
             pr = pair(mps=mp, dir=dir)
             pr.score = Score(0, None, None, None, None)
