@@ -271,7 +271,7 @@ class Traveller(object):
         parts = contract.split()
 
         # Check for passed hands/adjusted/phantom(?)
-        if len(parts) < 2:
+        if len(parts) < 2 or contract == "N P":
             return 0
 
         # Sanity check: should have no more than three components

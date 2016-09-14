@@ -76,6 +76,7 @@ class TestPair(unittest.TestCase):
 class TestTraveller(unittest.TestCase):
     def test_get_trick_count(self):
         self.assertEqual(Traveller.get_trick_count("", ""), 0)
+        self.assertEqual(Traveller.get_trick_count("N P", ""), 0)
         self.assertEqual(Traveller.get_trick_count("PASS", ""), 0)
         self.assertEqual(Traveller.get_trick_count("1 NT", "="), 7)
         self.assertEqual(Traveller.get_trick_count("1 NT", "-7"), 0)
