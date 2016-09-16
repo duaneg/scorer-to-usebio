@@ -39,8 +39,8 @@ class TestScore(unittest.TestCase):
         xml = ET.XML('<result apoints="1" cpoints="3"/>')
         mps = Score.get_master_points(xml)
         self.assertEqual(mps, [
-            MasterPoints('a', 1),
-            MasterPoints('c', 3),
+            MasterPoints('a', 100),
+            MasterPoints('c', 300),
         ])
 
 def player(count):

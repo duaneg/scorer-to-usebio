@@ -104,10 +104,6 @@ class Score(object):
 
         mps = Score.get_master_points(score)
 
-        # TODO: Adjusted scores are untested!
-        #
-        # I really need to get hold of some adjusted results.
-        #
         # The raw, final, and handicap values are all reported to two decimal
         # places, but the final value we compute does not always match that
         # provided (when we know there was no adjustment). Presumbably this is
@@ -129,7 +125,7 @@ class Score(object):
             pts = score.get('%spoints' % type)
             if pts is None or pts == '0':
                 continue
-            mps.append(MasterPoints(type, int(pts)))
+            mps.append(MasterPoints(type, int(pts) * 100))
         return mps
 
     def write_usebio_xml(self, xml):
